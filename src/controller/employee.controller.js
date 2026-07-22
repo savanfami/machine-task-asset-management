@@ -14,7 +14,7 @@ const getEmployee = async(req, res)=> {
 const createEmployee=async(req,res)=>{
     try {
         await EmployeeModel.create(req.body)
-        res.redirect('/employees');
+       return res.redirect('/employees');
     } catch (error) {
         console.log(error)
     }
