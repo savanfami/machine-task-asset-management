@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import employeeRoutes from './routes/employee.routes.js'
+import assetCategoryRoutes from './routes/assetCategory.routes.js'
 import sequelize from "./config/connection.js";
 import dotenv from 'dotenv'
 dotenv.config()
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use('/employees',employeeRoutes)
+app.use('/asset-category', assetCategoryRoutes);
 app.get("/", (req, res) => {
  res.render("index");
 }); 

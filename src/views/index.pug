@@ -1,0 +1,49 @@
+extends layout
+
+block content
+  .text-center.mb-5
+    h1.display-4 Asset Management System
+    p.lead Manage employees, assets, categories, and transactions efficiently.
+
+  .row.g-4
+    .col-md-4
+      .card.h-100.shadow-sm
+        .card-body.text-center
+          h4.card-title Employee Master
+          p.card-text Add, edit, view, and manage employees.
+          a.btn.btn-primary(href='/employees') Go to Employees
+
+    .col-md-4
+      .card.h-100.shadow-sm
+        .card-body.text-center
+          h4.card-title Asset Categories
+          p.card-text Manage hardware categories like laptops and mobiles.
+          a.btn.btn-primary(href='/asset-category') Go to Categories
+
+    .col-md-4
+      .card.h-100.shadow-sm
+        .card-body.text-center
+          h4.card-title Asset Master
+          p.card-text Add, edit, and manage company assets.
+          a.btn.btn-primary(href='/assets') Go to Assets
+
+    .col-md-4
+      .card.h-100.shadow-sm
+        .card-body.text-center
+          h4.card-title Issue Asset
+          p.card-text Assign assets to employees.
+          a.btn.btn-success(href='/transactions/issue') Issue Asset
+
+    .col-md-4
+      .card.h-100.shadow-sm
+        .card-body.text-center
+          h4.card-title Return Asset
+          p.card-text Return assets from employees.
+          a.btn.btn-warning(href='/transactions/return') Return Asset
+
+    .col-md-4
+      .card.h-100.shadow-sm
+        .card-body.text-center
+          h4.card-title Stock View
+          p.card-text View available assets and stock value.
+          a.btn.btn-info(href='/reports/stock') View Stock

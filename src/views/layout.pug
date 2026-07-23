@@ -9,6 +9,11 @@ html
     link(rel='stylesheet', href='https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css')
 
   body
+    //- Navbar visible on all pages
+    nav.navbar.navbar-dark.bg-dark
+      .container-fluid
+        a.navbar-brand(href='/') Asset Management
+
     .container.mt-4
       block content
 

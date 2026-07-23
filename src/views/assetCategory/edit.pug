@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+  .p-4.mb-4.rounded-3(style='background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;')
+    h2.mb-1.fw-bold Edit Asset Category
+    p.mb-0.small Update category details and manage its status
+
+  .card.border-0.shadow-sm
+    .card-body.p-4
+      form(action=`/asset-category/edit/${category.id}`, method='POST')
+        .mb-3
+          label.form-label.fw-semibold Category Name
+          input.form-control(type='text', name='name', value=category.name, required)
+
+        .mb-4
+          label.form-label.fw-semibold Status
+          select.form-select(name='status')
+            option(value='true', selected=category.status) Active
+            option(value='false', selected=!category.status) Inactive
+
+        .d-flex.gap-2
+          button.btn.btn-primary.px-4(type='submit') Update Category
+          a.btn.btn-outline-secondary.px-4(href='/asset-category') Cancel

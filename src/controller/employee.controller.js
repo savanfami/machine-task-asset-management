@@ -26,7 +26,7 @@ export const showEditPage = async (req, res) => {
   try {
     const employee = await EmployeeModel.findByPk(req.params.id);
     if (!employee) {
-      return res.status(404).send("Employee not found");
+      return res.status(404).send("employee not found");
     }
     res.render("employees/edit", { employee });
   } catch (error) {

@@ -1,26 +1,33 @@
 extends ../layout
 
 block content
-  h2.mb-4 Add Employee
+  //- Colored page header
+  .p-4.mb-4.rounded-3(style='background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;')
+    h2.mb-1.fw-bold Add Employee
+    p.mb-0.small Enter employee details and assign their status
 
-  form(action='/employees/add', method='POST')
-    .mb-3
-      label.form-label Name
-      input.form-control(type='text', name='name', required)
+  //- Form card
+  .card.border-0.shadow-sm
+    .card-body.p-4
+      form(action='/employees/add', method='POST')
+        .mb-3
+          label.form-label.fw-semibold Name
+          input.form-control(type='text', name='name', required)
 
-    .mb-3
-      label.form-label Email
-      input.form-control(type='email', name='email', required)
+        .mb-3
+          label.form-label.fw-semibold Email
+          input.form-control(type='email', name='email', required)
 
-    .mb-3
-      label.form-label Branch
-      input.form-control(type='text', name='branch', required)
+        .mb-3
+          label.form-label.fw-semibold Branch
+          input.form-control(type='text', name='branch', required)
 
-    .mb-3
-      label.form-label Status
-      select.form-select(name='status')
-        option(value='true') Active
-        option(value='false') Inactive
+        .mb-4
+          label.form-label.fw-semibold Status
+          select.form-select(name='status')
+            option(value='true') Active
+            option(value='false') Inactive
 
-    button.btn.btn-success(type='submit') Save Employee
-    a.btn.btn-secondary.ms-2(href='/employees') Cancel
+        .d-flex.gap-2
+          button.btn.btn-success.px-4(type='submit') Save Employee
+          a.btn.btn-outline-secondary.px-4(href='/employees') Cancel

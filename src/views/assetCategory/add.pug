@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+  .p-4.mb-4.rounded-3(style='background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;')
+    h2.mb-1.fw-bold Add Asset Category
+    p.mb-0.small Enter category details and assign status
+
+  .card.border-0.shadow-sm
+    .card-body.p-4
+      form(action='/asset-category/add', method='POST')
+        .mb-3
+          label.form-label.fw-semibold Category Name
+          input.form-control(type='text', name='name', required)
+
+        .mb-4
+          label.form-label.fw-semibold Status
+          select.form-select(name='status')
+            option(value='true') Active
+            option(value='false') Inactive
+
+        .d-flex.gap-2
+          button.btn.btn-success.px-4(type='submit') Save Category
+          a.btn.btn-outline-secondary.px-4(href='/asset-category') Cancel
