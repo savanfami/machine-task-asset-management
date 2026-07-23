@@ -19,8 +19,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use('/employees',employeeRoutes)
 app.get("/", (req, res) => {
-  res.render("index");
-});
+ res.render("index");
+}); 
 
 const startServer = async () => {
   try {

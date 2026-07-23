@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  h2.mb-4 Edit Employee
+
+  form(action=`/employees/edit/${employee.id}`, method='POST')
+    .mb-3
+      label.form-label Name
+      input.form-control(type='text', name='name', value=employee.name, required)
+
+    .mb-3
+      label.form-label Email
+      input.form-control(type='email', name='email', value=employee.email, required)
+
+    .mb-3
+      label.form-label Branch
+      input.form-control(type='text', name='branch', value=employee.branch, required)
+
+    .mb-3
+      label.form-label Status
+      select.form-select(name='status')
+        option(value='true', selected=employee.status) Active
+        option(value='false', selected=!employee.status) Inactive
+
+    button.btn.btn-primary(type='submit') Update Employee
+    a.btn.btn-secondary.ms-2(href='/employees') Cancel

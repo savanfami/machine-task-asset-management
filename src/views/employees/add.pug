@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  h2.mb-4 Add Employee
+
+  form(action='/employees/add', method='POST')
+    .mb-3
+      label.form-label Name
+      input.form-control(type='text', name='name', required)
+
+    .mb-3
+      label.form-label Email
+      input.form-control(type='email', name='email', required)
+
+    .mb-3
+      label.form-label Branch
+      input.form-control(type='text', name='branch', required)
+
+    .mb-3
+      label.form-label Status
+      select.form-select(name='status')
+        option(value='true') Active
+        option(value='false') Inactive
+
+    button.btn.btn-success(type='submit') Save Employee
+    a.btn.btn-secondary.ms-2(href='/employees') Cancel

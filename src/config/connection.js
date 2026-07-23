@@ -1,10 +1,15 @@
 import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
 
-const sequelize = new Sequelize("asset_management", "postgres", "savan@1239", {
+dotenv.config();
+
+const name = process.env.DB_NAME;
+const password = process.env.DB_PASSWORD;
+const sequelize = new Sequelize(name, "postgres", password, {
   host: "localhost",
   port: 5432,
   dialect: "postgres",
-  logging:false
+  logging: false,
 });
 
 async function testConnection() {
