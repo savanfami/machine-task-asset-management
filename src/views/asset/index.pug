@@ -1,0 +1,68 @@
+extends ../layout
+
+block content
+
+  //- Colored page header
+  .p-4.mb-4.rounded-3(style='background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;')
+    .d-flex.justify-content-between.align-items-center
+      div
+        h2.mb-1.fw-bold Asset Master
+        p.mb-0.small Manage all company assets
+      a.btn.btn-light.fw-semibold(href='/assets/add')
+        i.bi.bi-plus-circle.me-2
+        | Add Asset
+
+  //- Asset Table Card
+  .card.border-0.shadow-sm
+    .card-body.p-4
+
+      table.table.table-hover.align-middle#assetTable
+        thead.table-dark
+          tr
+            th #
+            th Asset Code
+            th Serial Number
+            th Make
+            th Model
+            th Category
+            th Purchase Cost
+            th Status
+            th.text-center Actions
+
+        tbody
+          each asset, index in assets
+            tr
+              td= index + 1
+              td= asset.assetCode
+              td= asset.serialNumber
+              td= asset.manufacturer
+              td= asset.model
+              td= asset.assetCategory.name
+              td ₹ #{asset.purchaseCost}
+
+              td
+                if asset.status === 'IN_STOCK'
+                  span.badge.bg-success In Stock
+                else if asset.status === 'ISSUED'
+                  span.badge.bg-warning.text-dark Issued
+                else
+                  span.badge.bg-danger Damaged
+
+              td.text-center
+                a.btn.btn-sm.btn-primary.me-2(href=`/assets/edit/${asset.id}`)
+                  i.bi.bi-pencil-square.me-1
+                  | Edit
+
+                form(action=`/assets/delete/${asset.id}`, method='POST', style='display:inline')
+                  button.btn.btn-sm.btn-danger(
+                    type='submit',
+                    onclick="return confirm('Delete this asset?')"
+                  )
+                    i.bi.bi-trash.me-1
+                    | Delete
+
+block scripts
+  script.
+    $(document).ready(function () {
+      $('#assetTable').DataTable();
+    });

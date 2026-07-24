@@ -1,0 +1,59 @@
+extends ../layout
+
+block content
+  .p-4.mb-4.rounded-3(style='background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;')
+    h2.mb-1.fw-bold Edit Asset
+    p.mb-0.small Update asset details
+
+  .card.border-0.shadow-sm
+    .card-body.p-4
+
+      form(action=`/assets/edit/${asset.id}`, method='POST')
+
+        .mb-3
+          label.form-label.fw-semibold Asset Code
+          input.form-control(type='text', name='assetCode', value=asset.assetCode)
+
+        .mb-3
+          label.form-label.fw-semibold Serial Number
+          input.form-control(type='text', name='serialNumber', value=asset.serialNumber)
+
+        .mb-3
+          label.form-label.fw-semibold Manufacturer
+          input.form-control(type='text', name='manufacturer', value=asset.manufacturer)
+
+        .mb-3
+          label.form-label.fw-semibold Model
+          input.form-control(type='text', name='model', value=asset.model)
+
+        .mb-3
+          label.form-label.fw-semibold Purchase Cost
+          input.form-control(type='number', name='purchaseCost', value=asset.purchaseCost)
+
+        .mb-3
+          label.form-label.fw-semibold Purchase Date
+          input.form-control(type='date', name='purchaseDate', value=asset.purchaseDate)
+
+        .mb-3
+          label.form-label.fw-semibold Category
+
+          select.form-select(name='categoryId')
+
+            each category in categories
+              option(
+                value=category.id,
+                selected=category.id===asset.categoryId
+              )= category.name
+
+        .mb-4
+          label.form-label.fw-semibold Status
+
+          select.form-select(name='status')
+
+            option(value='IN_STOCK', selected=asset.status==='IN_STOCK') In Stock
+            option(value='ISSUED', selected=asset.status==='ISSUED') Issued
+            option(value='DAMAGED', selected=asset.status==='DAMAGED') Damaged
+
+        .d-flex.gap-2
+          button.btn.btn-primary(type='submit') Update Asset
+          a.btn.btn-outline-secondary(href='/assets') Cancel
