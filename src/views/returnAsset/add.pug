@@ -1,0 +1,40 @@
+extends ../layout
+block content
+
+  .p-4.mb-4.rounded-3(style='background: linear-gradient(135deg,#4f46e5,#7c3aed); color:white;')
+    h2.mb-1.fw-bold Return Asset
+    p.mb-0.small Receive an issued asset
+
+  .card.border-0.shadow-sm
+    .card-body.p-4
+
+      form(action="/returnAsset/add", method="POST")
+
+        .mb-3
+          label.form-label.fw-semibold Issued Asset
+
+          select.form-select(name="transactionId", required)
+
+            option(value="") Select Asset
+
+            each item in issuedAssets
+              option(value=item.id)
+                | #{item.Employee.name} - #{item.Asset.assetCode}
+
+        .mb-3
+          label.form-label.fw-semibold Return Date
+
+          input.form-control(type="date", name="returnDate", required)
+
+        .mb-3
+          label.form-label.fw-semibold Reason
+
+          select.form-select(name="reason")
+
+            option(value="Repair") Repair
+            option(value="Upgrade") Upgrade
+            option(value="Resignation") Resignation
+            option(value="Other") Other
+
+        button.btn.btn-success(type="submit")
+          | Return Asset
