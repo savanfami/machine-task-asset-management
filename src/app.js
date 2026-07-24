@@ -3,11 +3,16 @@ import path from "path";
 import { fileURLToPath } from "url";
 import employeeRoutes from './routes/employee.routes.js'
 import assetCategoryRoutes from './routes/assetCategory.routes.js'
+import returnAssetsRoutes from './routes/returnAssets.routes.js'
+import assetRoutes from './routes/asset.routes.js'
 import sequelize from "./config/connection.js";
+import issueRoutes from "./routes/issue.routes.js";
 import dotenv from 'dotenv'
+import "./model/association.js";
+
 dotenv.config()
 const app = express();
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3001
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,17 +23,20 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use('/employees',employeeRoutes)
+app.use('/employees', employeeRoutes)
 app.use('/asset-category', assetCategoryRoutes);
+app.use('/assets', assetRoutes);
+app.use('/issueAsset', issueRoutes);
+app.use('/returnAsset', returnAssetsRoutes);
 app.get("/", (req, res) => {
- res.render("index");
-}); 
+  res.render("index");
+});
 
 const startServer = async () => {
   try {
     await sequelize.authenticate();
 
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     console.log("Database synchronized.");
 
     app.listen(PORT, () => {

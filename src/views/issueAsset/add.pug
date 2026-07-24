@@ -1,0 +1,48 @@
+extends ../layout
+
+block content
+
+  .p-4.mb-4.rounded-3(style='background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;')
+    h2.mb-1.fw-bold Issue Asset
+    p.mb-0.small Assign an available asset to an employee
+
+  .card.border-0.shadow-sm
+    .card-body.p-4
+
+      form(action="/issueAsset/issue", method="POST")
+
+        .mb-3
+          label.form-label.fw-semibold Employee
+
+          select.form-select(name="employeeId", required)
+            option(value="") Select Employee
+
+            each employee in employees
+              option(value=employee.id)= employee.name
+
+        .mb-3
+          label.form-label.fw-semibold Asset
+
+          select.form-select(name="assetId", required)
+            option(value="") Select Asset
+
+            each asset in assets
+              option(value=asset.id)
+                | #{asset.assetCode} - #{asset.manufacturer} #{asset.model}
+
+        .mb-3
+          label.form-label.fw-semibold Issue Date
+
+          input.form-control(
+            type="date",
+            name="issueDate",
+            required
+          )
+
+        .d-flex.gap-2.mt-4
+          button.btn.btn-success.px-4(type="submit")
+            i.bi.bi-box-arrow-right.me-2
+            | Issue Asset
+
+          a.btn.btn-outline-secondary.px-4(href="/assets")
+            | Cancel
