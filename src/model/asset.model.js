@@ -33,12 +33,25 @@ const Asset = sequelize.define("Asset", {
   },
 
   status: {
-    type: DataTypes.ENUM("IN_STOCK", "ISSUED", "DAMAGED"),
+    type: DataTypes.ENUM("IN_STOCK", "ISSUED", "DAMAGED", "SCRAPPED"),
     defaultValue: "IN_STOCK",
   },
 
   categoryId: {
     type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+
+  scrapDate: {
+    type: DataTypes.DATEONLY,
+  },
+
+  scrapReason: {
+    type: DataTypes.STRING,
+  },
+
+  branch: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
 });

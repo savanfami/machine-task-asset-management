@@ -1,12 +1,18 @@
 import Asset from "../model/asset.model.js";
 import AssetCategory from "../model/assetCategory.model.js";
 import Employee from "../model/employee.model.js";
+import { Op } from 'sequelize';
 
 export const getAssets = async (req, res) => {
   try {
     const assets = await Asset.findAll({
-      include: AssetCategory,
-    });
+  where: {
+    status: {
+      [Op.ne]: 'SCRAPPED',
+    },
+  },
+  include: AssetCategory,
+});
     res.render("asset/index", { assets });
   } catch (error) {
     console.log(error);
@@ -38,6 +44,7 @@ export const createAsset = async (req, res) => {
       purchaseDate,
       status,
       categoryId,
+      branch
     } = req.body;
 
     const existingAsset = await Asset.findOne({
@@ -59,6 +66,7 @@ export const createAsset = async (req, res) => {
       purchaseDate,
       status,
       categoryId,
+      branch
     });
 
     res.redirect("/assets");
@@ -104,6 +112,7 @@ export const updateAsset = async (req, res) => {
       purchaseDate,
       categoryId,
       status,
+      branch
     } = req.body;
 
     await Asset.update(
@@ -116,6 +125,7 @@ export const updateAsset = async (req, res) => {
         purchaseDate,
         categoryId,
         status,
+        branch
       },
       {
         where: {
@@ -170,4 +180,31 @@ export const getIssuedAssets = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getStockView = async (req, res) => {
+    try {
+        const stocks = await Asset.findAll({
+            attributes: [
+                "branch",
+                [fn("COUNT", col("id")), "assetCount"],
+                [fn("SUM", col("purchaseCost")), "totalValue"]
+            ],
+            where: {
+                status: "IN_STOCK"
+            },
+            group: ["branch"],
+            raw: true
+        });
+        const totalValue = stocks.reduce(
+            (sum, stock) => sum + Number(stock.totalValue),
+            0
+        );
+        res.render("asset/stockView", {
+            stocks,
+            totalValue
+        });
+    } catch (err) {
+       console.log(err)
+    }
 };

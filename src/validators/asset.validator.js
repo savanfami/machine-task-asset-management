@@ -5,15 +5,18 @@ export const assetSchema = z.object({
   serialNumber: z.string().min(1, "Serial number is required"),
   manufacturer: z.string().min(1, "Manufacturer is required"),
   model: z.string().min(1, "Model is required"),
-
+  branch: z
+    .string()
+    .trim()
+    .min(1, "Branch is required"),
   purchaseCost: z.coerce
     .number()
     .nonnegative("Purchase cost must be non-negative"),
 
   purchaseDate: z.string().optional(),
 
-  status: z.enum(["IN_STOCK", "ISSUED", "DAMAGED"]).optional(),
-
+  status: z.enum(["IN_STOCK", "ISSUED", "DAMAGED","SCRAPPED"]).optional(),
+  
   categoryId: z.coerce
     .number()
     .int()

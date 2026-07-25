@@ -1,0 +1,64 @@
+extends ../layout
+
+block content
+
+  .p-4.mb-4.rounded-3(style='background: linear-gradient(135deg, #0d6efd, #6610f2); color: white;')
+    h2.mb-1.fw-bold Stock View
+    p.mb-0.small
+      | Bird's eye view of all assets currently available in stock.
+
+  .row.mb-4
+
+    .col-md-6
+      .card.border-0.shadow-sm
+        .card-body.text-center
+          h6.text-muted Total Branches
+          h2.fw-bold.text-primary= stocks.length
+
+    .col-md-6
+      .card.border-0.shadow-sm
+        .card-body.text-center
+          h6.text-muted Total Stock Value
+          h2.fw-bold.text-success ₹ #{totalValue}
+
+  .card.border-0.shadow-sm
+    .card-body
+
+      table.table.table-hover.align-middle#stockTable
+
+        thead.table-dark
+          tr
+            th #
+            th Branch
+            th.text-center Available Assets
+            th.text-end Total Value
+
+        tbody
+
+          each stock, index in stocks
+
+            tr
+              td= index + 1
+              td= stock.branch
+              td.text-center
+                span.badge.bg-success.fs-6= stock.assetCount
+              td.text-end ₹ #{stock.totalValue}
+
+        tfoot.table-light
+          tr.fw-bold
+            td(colspan="2") Grand Total
+            td.text-center
+              = stocks.reduce((sum, item) => sum + item.assetCount, 0)
+            td.text-end ₹ #{totalValue}
+
+block scripts
+
+  script.
+    $(document).ready(function () {
+        $('#stockTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true
+        });
+    });

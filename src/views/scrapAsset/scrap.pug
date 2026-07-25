@@ -1,0 +1,59 @@
+extends ../layout
+
+block content
+  .p-4.mb-4.rounded-3(style='background: linear-gradient(135deg, #dc3545, #b02a37); color: white;')
+    h2.mb-1.fw-bold Scrap Asset
+    p.mb-0.small Mark this asset as obsolete. Once scrapped, it will no longer be available for issuing and will only appear in reports.
+
+  .card.border-0.shadow-sm
+    .card-body.p-4
+
+      .mb-4
+        h5.fw-bold.mb-3 Asset Details
+
+        .row.mb-2
+          .col-md-3.fw-semibold Asset Code
+          .col-md-9= asset.assetCode
+
+        .row.mb-2
+          .col-md-3.fw-semibold Serial Number
+          .col-md-9= asset.serialNumber
+
+        .row.mb-2
+          .col-md-3.fw-semibold Manufacturer
+          .col-md-9= asset.manufacturer
+
+        .row.mb-2
+          .col-md-3.fw-semibold Model
+          .col-md-9= asset.model
+
+        .row.mb-2
+          .col-md-3.fw-semibold Current Status
+          .col-md-9
+            span.badge.bg-primary= asset.status
+
+      hr
+
+      form(action=`/scrapAsset/scrap/${asset.id}` method='POST')
+
+        .mb-4
+          label.form-label.fw-semibold Scrap Reason
+          textarea.form-control(
+            name='reason'
+            rows='4'
+            placeholder='Enter the reason for scrapping this asset (optional)'
+          )
+
+        .alert.alert-warning
+          i.bi.bi-exclamation-triangle-fill.me-2
+          | This action will mark the asset as 
+          strong SCRAPPED
+          | . The asset will no longer be available for issuing and will only be visible in reports.
+
+        .d-flex.gap-2.mt-4
+          button.btn.btn-danger.px-4(type='submit')
+            i.bi.bi-trash.me-2
+            | Scrap Asset
+
+          a.btn.btn-outline-secondary.px-4(href='/assets')
+            | Cancel

@@ -7,6 +7,7 @@ import returnAssetsRoutes from './routes/returnAssets.routes.js'
 import assetRoutes from './routes/asset.routes.js'
 import sequelize from "./config/connection.js";
 import issueRoutes from "./routes/issue.routes.js";
+import scrapAssetRoutes from './routes/scrapAsset.routes.js'
 import dotenv from 'dotenv'
 import "./model/association.js";
 
@@ -28,6 +29,7 @@ app.use('/asset-category', assetCategoryRoutes);
 app.use('/assets', assetRoutes);
 app.use('/issueAsset', issueRoutes);
 app.use('/returnAsset', returnAssetsRoutes);
+app.use('/scrapAsset',scrapAssetRoutes)
 app.get("/", (req, res) => {
   res.render("index");
 });
