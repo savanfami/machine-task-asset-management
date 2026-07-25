@@ -1,0 +1,204 @@
+extends ../layout
+
+block content
+
+ 
+  .p-4.mb-4.rounded-3(style='background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;')
+    h2.mb-1.fw-bold Asset History
+    p.mb-0.small Complete lifecycle of the selected asset from purchase to current status.
+
+
+  .card.border-0.shadow-sm.mb-4
+    .card-header.bg-primary.text-white
+      h5.mb-0 Asset Information
+
+    .card-body
+
+      .row.mb-3
+        .col-md-3.fw-semibold Asset Code
+        .col-md-3= asset.assetCode
+
+        .col-md-3.fw-semibold Serial Number
+        .col-md-3= asset.serialNumber
+
+      .row.mb-3
+        .col-md-3.fw-semibold Manufacturer
+        .col-md-3= asset.manufacturer
+
+        .col-md-3.fw-semibold Model
+        .col-md-3= asset.model
+
+      .row.mb-3
+        .col-md-3.fw-semibold Category
+        .col-md-3= asset.assetCategory.name
+
+        .col-md-3.fw-semibold Branch
+        .col-md-3= asset.branch
+
+      .row.mb-3
+        .col-md-3.fw-semibold Purchase Date
+        .col-md-3= asset.purchaseDate
+
+        .col-md-3.fw-semibold Purchase Cost
+        .col-md-3 ₹ #{asset.purchaseCost}
+
+      .row
+        .col-md-3.fw-semibold Current Status
+
+        .col-md-3
+
+          if asset.status === "IN_STOCK"
+            span.badge.bg-success.fs-6 In Stock
+
+          else if asset.status === "ISSUED"
+            span.badge.bg-warning.text-dark.fs-6 Issued
+
+          else if asset.status === "DAMAGED"
+            span.badge.bg-danger.fs-6 Damaged
+
+          else if asset.status === "SCRAPPED"
+            span.badge.bg-secondary.fs-6 Scrapped
+
+
+
+  .card.border-0.shadow-sm.mb-4
+
+    .card-header.bg-success.text-white
+      h5.mb-0 Purchase Details
+
+    .card-body
+
+      .d-flex.align-items-center
+
+        .me-3
+          i.bi.bi-bag-check-fill.fs-1.text-success
+
+        div
+          h5.mb-1 Asset Purchased
+
+          p.mb-1
+            strong Purchase Date :
+            |  #{asset.purchaseDate}
+
+          p.mb-0
+            strong Purchase Cost :
+            |  ₹ #{asset.purchaseCost}
+
+
+
+  .card.border-0.shadow-sm.mb-4
+
+    .card-header.bg-info.text-white
+      h5.mb-0 Issue / Return History
+
+    .card-body
+
+      if asset.AssetTransactions.length
+
+        each transaction, index in asset.AssetTransactions
+
+          .card.border.mb-3
+
+            .card-body
+
+              .d-flex.justify-content-between.align-items-center.mb-3
+
+                h5.mb-0
+                  i.bi.bi-person-circle.me-2
+                  #{transaction.Employee.name}
+
+                if transaction.status === "ISSUED"
+                  span.badge.bg-warning.text-dark Issued
+                else
+                  span.badge.bg-success Returned
+
+              .row
+
+                .col-md-6.mb-2
+
+                  strong Employee Branch
+
+                  br
+
+                  = transaction.Employee.branch
+
+                .col-md-6.mb-2
+
+                  strong Issue Date
+
+                  br
+
+                  = transaction.issueDate
+
+              .row
+
+                .col-md-6
+
+                  strong Return Date
+
+                  br
+
+                  if transaction.returnDate
+                    = transaction.returnDate
+                  else
+                    span.text-danger Not Returned
+
+                .col-md-6
+
+                  strong Remarks
+
+                  br
+
+                  if transaction.reason
+                    = transaction.reason
+                  else
+                    span.text-muted -
+
+      else
+
+        .alert.alert-warning.mb-0
+
+          i.bi.bi-exclamation-circle.me-2
+
+          | This asset has never been issued.
+
+
+
+  if asset.status === "SCRAPPED"
+
+    .card.border-0.shadow-sm.mb-4
+
+      .card-header.bg-danger.text-white
+
+        h5.mb-0 Scrap Details
+
+      .card-body
+
+        .d-flex.align-items-center
+
+          .me-3
+            i.bi.bi-trash-fill.fs-1.text-danger
+
+          div
+
+            h5.text-danger.mb-2 Asset Scrapped
+
+            if asset.scrapDate
+              p.mb-1
+                strong Scrap Date :
+                |  #{asset.scrapDate}
+
+            if asset.scrapReason
+              p.mb-0
+                strong Reason :
+                |  #{asset.scrapReason}
+
+
+
+  .text-end
+
+    a.btn.btn-secondary(href="/assets")
+
+      i.bi.bi-arrow-left.me-2
+
+      | Back to Assets

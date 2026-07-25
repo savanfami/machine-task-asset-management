@@ -6,10 +6,10 @@ export const scrapAsset = async (req, res) => {
     const { reason } = req.body;
     const asset = await AssetModel.findByPk(id);
     if (!asset) {
-      return res.status(404).send("Asset not found");
+      return res.status(404).send("asset not found");
     }
     if (asset.status === "SCRAPPED") {
-      return res.status(400).send("Asset already scrapped");
+      return res.status(400).send("asset already scrapped");
     }
     await asset.update({
       status: "SCRAPPED",

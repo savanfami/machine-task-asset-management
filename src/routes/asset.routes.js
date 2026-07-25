@@ -1,7 +1,15 @@
 import express from "express";
-import { createAsset, deleteAsset, getAddAsset, getAssets, getEditAsset, getStockView, updateAsset } from "../controller/asset.controller.js";
+import {
+  createAsset,
+  deleteAsset,
+  getAddAsset,
+  getAssetHistory,
+  getAssets,
+  getEditAsset,
+  getStockView,
+  updateAsset,
+} from "../controller/asset.controller.js";
 const router = express.Router();
-
 
 router.get("/", getAssets);
 
@@ -13,6 +21,7 @@ router.post("/edit/:id", updateAsset);
 
 router.post("/delete/:id", deleteAsset);
 
-router.get('/stock-view',getStockView)
+router.get("/stock-view", getStockView);
 
-export default router; 
+router.get("/history/:id", getAssetHistory);
+export default router;

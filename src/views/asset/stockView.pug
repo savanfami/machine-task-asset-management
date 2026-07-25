@@ -48,7 +48,6 @@ block content
           tr.fw-bold
             td(colspan="2") Grand Total
             td.text-center
-              = stocks.reduce((sum, item) => sum + item.assetCount, 0)
             td.text-end ₹ #{totalValue}
 
 block scripts

@@ -34,7 +34,7 @@ export const issueAsset = async (req, res) => {
     const asset = await Asset.findByPk(assetId);
 
     if (!asset || asset.status !== "IN_STOCK") {
-      return res.send("Asset is not available.");
+      return res.send("asset not availble");
     }
 
     await AssetTransaction.create({

@@ -1,18 +1,19 @@
 import Asset from "../model/asset.model.js";
 import AssetCategory from "../model/assetCategory.model.js";
 import Employee from "../model/employee.model.js";
-import { Op } from 'sequelize';
+import AssetTransaction from "../model/issueAsset.model.js";
+import { col, fn, Op } from "sequelize";
 
 export const getAssets = async (req, res) => {
   try {
     const assets = await Asset.findAll({
-  where: {
-    status: {
-      [Op.ne]: 'SCRAPPED',
-    },
-  },
-  include: AssetCategory,
-});
+      where: {
+        status: {
+          [Op.ne]: "SCRAPPED",
+        },
+      },
+      include: AssetCategory,
+    });
     res.render("asset/index", { assets });
   } catch (error) {
     console.log(error);
@@ -32,7 +33,6 @@ export const getAddAsset = async (req, res) => {
   }
 };
 
-
 export const createAsset = async (req, res) => {
   try {
     const {
@@ -44,7 +44,7 @@ export const createAsset = async (req, res) => {
       purchaseDate,
       status,
       categoryId,
-      branch
+      branch,
     } = req.body;
 
     const existingAsset = await Asset.findOne({
@@ -66,7 +66,7 @@ export const createAsset = async (req, res) => {
       purchaseDate,
       status,
       categoryId,
-      branch
+      branch,
     });
 
     res.redirect("/assets");
@@ -75,7 +75,6 @@ export const createAsset = async (req, res) => {
     res.redirect("/assets/add");
   }
 };
-
 
 export const getEditAsset = async (req, res) => {
   try {
@@ -112,7 +111,7 @@ export const updateAsset = async (req, res) => {
       purchaseDate,
       categoryId,
       status,
-      branch
+      branch,
     } = req.body;
 
     await Asset.update(
@@ -125,13 +124,13 @@ export const updateAsset = async (req, res) => {
         purchaseDate,
         categoryId,
         status,
-        branch
+        branch,
       },
       {
         where: {
           id,
         },
-      }
+      },
     );
 
     res.redirect("/assets");
@@ -140,7 +139,6 @@ export const updateAsset = async (req, res) => {
     res.redirect(`/assets/edit/${req.params.id}`);
   }
 };
-
 
 export const deleteAsset = async (req, res) => {
   try {
@@ -159,52 +157,79 @@ export const deleteAsset = async (req, res) => {
   }
 };
 
-
 export const getIssuedAssets = async (req, res) => {
   try {
-
     const issues = await AssetTransaction.findAll({
       include: [
         {
-          model: Employee
+          model: Employee,
         },
         {
-          model: Asset
-        }
-      ]
+          model: Asset,
+        },
+      ],
     });
     res.render("issueAsset/index", {
-      issues
+      issues,
     });
-
   } catch (error) {
     console.log(error);
   }
 };
 
 export const getStockView = async (req, res) => {
-    try {
-        const stocks = await Asset.findAll({
-            attributes: [
-                "branch",
-                [fn("COUNT", col("id")), "assetCount"],
-                [fn("SUM", col("purchaseCost")), "totalValue"]
-            ],
-            where: {
-                status: "IN_STOCK"
+  try {
+    const stocks = await Asset.findAll({
+      attributes: [
+        "branch",
+        [fn("COUNT", col("id")), "assetCount"],
+        [fn("SUM", col("purchaseCost")), "totalValue"],
+      ],
+      where: {
+        status: "IN_STOCK",
+      },
+      group: ["branch"],
+      raw: true,
+    });
+    const totalValue = stocks.reduce(
+      (sum, stock) => sum + Number(stock.totalValue),
+      0,
+    );
+    res.render("asset/stockView", {
+      stocks,
+      totalValue,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getAssetHistory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const asset = await Asset.findByPk(id, {
+      include: [
+        {
+          model: AssetCategory,
+        },
+        {
+          model: AssetTransaction,
+          include: [
+            {
+              model: Employee,
             },
-            group: ["branch"],
-            raw: true
-        });
-        const totalValue = stocks.reduce(
-            (sum, stock) => sum + Number(stock.totalValue),
-            0
-        );
-        res.render("asset/stockView", {
-            stocks,
-            totalValue
-        });
-    } catch (err) {
-       console.log(err)
+          ],
+        },
+      ],
+      order: [[AssetTransaction, "issueDate", "ASC"]],
+    });
+    if (!asset) {
+      return res.status(404).send("asset not found");
     }
+    res.render("asset/history", {
+      asset,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
